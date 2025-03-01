@@ -25,9 +25,9 @@ run:
 # flash the given project to a board
 emb_flash:
 	cd $1 && \
-		pio run --t upload --environment uno
+		make emb_flash
 
 # compile NOT upload the given project
 emb_compile:
 	cd $1 && \
-		pio run -e uno
+		make emb_compile
