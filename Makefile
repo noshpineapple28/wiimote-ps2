@@ -25,9 +25,9 @@ make run:
 # flash the given project to a board
 emb_flash:
 	cd $1 && \
-		pio run --t upload --environment atmelavr
+		pio run --t upload --environment uno
 
 # compile NOT upload the given project
 emb_compile:
 	cd $1 && \
-		pio run -e atmelavr
+		pio run -e uno
