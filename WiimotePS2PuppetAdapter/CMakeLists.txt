@@ -8,9 +8,11 @@ add_executable(WiimotePS2PuppetAdapter ${SRC_FILES})
 ####################################################
 #                   LIBRARIES
 ####################################################
+add_subdirectory(./lib/wiiuse)
+add_subdirectory(./lib/simpleble/simpleble)
 include_directories(
-    ${CMAKE_SOURCE_DIR}/wiiuse/src
-    ${CMAKE_SOURCE_DIR}/simpleble/simpleble/include/simpleble_c
+    ./lib/wiiuse/src
+    ./lib/simpleble/simpleble/include/simpleble_c
 )
 target_link_libraries(WiimotePS2PuppetAdapter wiiuse)
 target_link_libraries(WiimotePS2PuppetAdapter simpleble::simpleble)

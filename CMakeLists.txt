@@ -6,5 +6,3 @@ set(CMAKE_C_STANDARD_REQUIRED True)
 
 # link the library source files
 add_subdirectory(./WiimotePS2PuppetAdapter)
-add_subdirectory(./wiiuse)
-add_subdirectory(./simpleble/simpleble)

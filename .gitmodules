@@ -1,6 +1,6 @@
-[submodule "simpleble"]
-	path = simpleble
+[submodule "WiimotePS2PuppetAdapter/lib/simpleble"]
+	path = WiimotePS2PuppetAdapter/lib/simpleble
 	url = git@github.com:simpleble/simpleble.git
-[submodule "wiiuse"]
-	path = wiiuse
+[submodule "WiimotePS2PuppetAdapter/lib/wiiuse"]
+	path = WiimotePS2PuppetAdapter/lib/wiiuse
 	url = git@github.com:wiiuse/wiiuse.git
