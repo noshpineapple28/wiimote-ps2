@@ -15,8 +15,8 @@ clean:
 	del /q /S build
 
 # run the cmake executable
-make run:
-	.\build\Debug\WiimotePS2PuppetAdapter.exe
+run:
+	.\build\WiimotePS2PuppetAdapter\Debug\WiimotePS2PuppetAdapter.exe
 
 ############################################################
 # 						ARDUINO CMDS
