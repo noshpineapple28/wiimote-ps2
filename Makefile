@@ -4,11 +4,13 @@
 
 # build the cmake project
 # DEFAULT CMD
+MODE=Debug
+
 cmake:
 	mkdir build || \
 		cd ./build && \
 		cmake .. && \
-		cmake --build .
+		cmake --build . --config $(MODE)
 
 # clean build dir
 clean:
@@ -16,7 +18,7 @@ clean:
 
 # run the cmake executable
 run:
-	.\build\WiimotePS2PuppetAdapter\Debug\WiimotePS2PuppetAdapter.exe
+	.\build\WiimotePS2PuppetAdapter\$(MODE)\WiimotePS2PuppetAdapter.exe
 
 ############################################################
 # 						ARDUINO CMDS
