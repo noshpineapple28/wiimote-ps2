@@ -1,6 +1,7 @@
 #include <SPI.h>
 #include "main.h"
 #include "ps2_spi.h"
+#include "adapter_i2c.h"
 
 void setup()
 {
@@ -9,9 +10,11 @@ void setup()
     ;
   // put your setup code here, to run once:
   init_ps2_spi();
+  init_i2c();
 }
 
 void loop()
 {
   handle_spi();
+  poll_controller_status();
 }
