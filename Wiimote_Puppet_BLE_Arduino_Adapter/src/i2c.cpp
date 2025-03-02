@@ -23,5 +23,5 @@ void init_i2c()
     pinMode(I2C_IRQ_PIN, INPUT);
     attachInterrupt(I2C_IRQ_PIN, send_controller_state, FALLING);
 
-    Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN);
+    Wire.begin();
 }
