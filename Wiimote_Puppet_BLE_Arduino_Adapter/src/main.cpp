@@ -1,18 +1,22 @@
-#include <Arduino.h>
+#include "main.h"
+#include "ble_adapter.h"
 
-// put function declarations here:
-int myFunction(int, int);
+void setup()
+{
+  Serial.begin(115200);
+  while (!Serial)
+    ;
 
-void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+  // start the BLE adapter for advertising
+  Serial.printf("Initializing BLE\r\n");
+  initialize_adapter();
+  Serial.printf("BLE Initialized\r\n");
+
+  // start I2C
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
-}
-
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
+void loop()
+{
+  // BLE state update check
+  update_state();
 }
