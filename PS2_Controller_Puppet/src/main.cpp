@@ -15,5 +15,11 @@ void setup()
 void loop()
 {
   handle_spi();
-  poll_controller_status();
+
+  do
+  {
+    poll_controller_status(1);
+    poll_controller_status(2);
+  } while (!compare_buffs());
+
 }

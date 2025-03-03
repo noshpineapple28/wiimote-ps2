@@ -21,11 +21,13 @@ typedef struct controller {
 /**
  * @brief sends a request to the adapter for controller status. BLOCKING
  */
-void poll_controller_status(void);
+void poll_controller_status(uint8_t num);
 
 /**
  * @brief initializes I2C and necessary events/outputs
  */
 void init_i2c(void);
+
+uint8_t compare_buffs();
 
 #endif
