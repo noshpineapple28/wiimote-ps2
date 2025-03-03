@@ -2,8 +2,9 @@
 #include <stdlib.h>
 #include "wiiuse.h"
 #include "simpleble_c/simpleble.h"
+#include "main.h"
 
-#define PERIPHERAL_LIST_SIZE (size_t)32
+#define PERIPHERAL_LIST_SIZE (size_t)64
 typedef struct
 {
     simpleble_uuid_t service;
@@ -129,13 +130,20 @@ int main()
         characteristic_list[selection].characteristic.value
     );
 
-    uint8_t data[] = {0xff, 0x11, 0xff, 0xf1};
+    controller cntrl = {
+        .l_dx = 0x44,
+        .l_dy = 0x11,
+        .r_dx = 0x00,
+        .r_dy = 0x74,
+        .button_map_1 = 0x41,
+        .button_map_2 = 0x14
+    };
     simpleble_err_t err = simpleble_peripheral_write_request(
         peripheral,
         characteristic_list[selection].service,
         characteristic_list[selection].characteristic,
-        data,
-        4);
+        (uint8_t *) &cntrl,
+        6);
 
     printf("1 is an error: %d", err);
 

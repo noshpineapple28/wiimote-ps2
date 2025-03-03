@@ -14,6 +14,7 @@ target_include_directories(
     WiimotePS2PuppetAdapter PRIVATE
     ./lib/wiiuse/src
     ./lib/simpleble/simpleble/include/simpleble_c
+    ./include
 )
 target_link_libraries(WiimotePS2PuppetAdapter wiiuse)
 target_link_libraries(WiimotePS2PuppetAdapter simpleble::simpleble-c)
