@@ -1,6 +1,7 @@
 #ifndef __PS2_SPI_H_
 #define __PS2_SPI_H_
 
+#include <SPI.h>
 #include "main.h"
 
 #define MAX_COMMAND 32

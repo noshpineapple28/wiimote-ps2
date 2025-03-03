@@ -1,4 +1,3 @@
-#include <SPI.h>
 #include "main.h"
 #include "ps2_spi.h"
 #include "adapter_i2c.h"

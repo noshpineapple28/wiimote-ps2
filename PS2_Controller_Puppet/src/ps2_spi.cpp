@@ -18,6 +18,7 @@ volatile uint8_t max_transfer_size = 0;
 
 void init_ps2_spi()
 {
+    Serial.print("Initializing SPI\r\n");
     // SPI_MODE 3
     SPCR = 0;
 
