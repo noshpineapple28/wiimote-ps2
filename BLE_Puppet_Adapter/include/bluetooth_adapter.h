@@ -10,12 +10,12 @@
 #define ADAPTER_CHARACTERISTIC_UUID "680f8715-b97a-4ff5-bb0c-4ca4f37d9b94"
 
 typedef struct controller {
-    uint8_t l_dx;
-    uint8_t l_dy;
-    uint8_t r_dx;
-    uint8_t r_dy;
     uint8_t button_map_1;
     uint8_t button_map_2;
+    uint8_t r_dx;
+    uint8_t r_dy;
+    uint8_t l_dx;
+    uint8_t l_dy;
 } controller;
 
 /**
