@@ -1,4 +1,5 @@
 #include "ps2_spi.h"
+#include "adapter_i2c.h"
 
 volatile uint8_t digital_mode = 1;
 volatile uint8_t process_it = 0;
@@ -15,6 +16,9 @@ volatile uint8_t header_pos = 0;
 
 // size of the transfer to be done
 volatile uint8_t max_transfer_size = 0;
+
+// controller state
+static controller *cntrl;
 
 void init_ps2_spi()
 {
@@ -45,6 +49,8 @@ void init_ps2_spi()
     pinMode(SCK, INPUT);      // sets the digital pin 12 as output
     pinMode(ACK_PIN, OUTPUT); // sets the digital pin 12 as output
 
+    // get reference to the controller state
+    cntrl = get_controller();
     // ENABLE SPI
     SPCR |= (1 << SPE);
     Serial.print("SPI initialized\r\n");
@@ -87,7 +93,8 @@ void set_next_command()
         max_transfer_size = max_digital41;
         break;
     case 0x42:
-        tx = config42;
+        // tx = config42;
+        tx = (uint8_t *) cntrl + 4;
         max_transfer_size = max_digital42;
         break;
     case 0x43:

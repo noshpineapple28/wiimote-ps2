@@ -17,7 +17,7 @@ volatile static uint8_t config41[MAX_COMMAND] = { 0x00, 0x00, 0x00, 0x00, 0x00, 
 volatile static uint8_t max_digital41 = 6;
 volatile static uint8_t max_analog41 = 6;
 // poll
-volatile static uint8_t config42[MAX_COMMAND] = { 0xff ^ (1 << 6), 0xff ^ (1 << 6), 0xf7, 0xf7, 0xf7, 0xf7 };
+volatile static uint8_t config42[MAX_COMMAND] = { 0xff, 0xff, 0xf7, 0xf7, 0xf7, 0xf7 };
 volatile static uint8_t max_digital42 = 2;
 volatile static uint8_t max_analog42 = 4;
 // escape hatch

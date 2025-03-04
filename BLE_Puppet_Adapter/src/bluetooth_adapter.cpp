@@ -6,7 +6,14 @@ BLEDoubleCharacteristic controller_state(
     BLERead | BLEWrite);
 
 // status of the controller
-static controller cntrl = {0};
+static controller cntrl = {
+    .button_map_1 = 0xff,
+    .button_map_2 = 0xff,
+    .r_dx = 0xff,
+    .r_dy = 0xff,
+    .l_dx = 0xff,
+    .l_dy = 0xff
+};
 
 controller *get_controller(void)
 {

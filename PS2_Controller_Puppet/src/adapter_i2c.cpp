@@ -4,6 +4,14 @@ uint8_t i2c_awaiting = 0;
 uint8_t buf_1[6];
 uint8_t buf_2[6];
 
+static controller cntrl = {
+    .r_dx = 0xff,
+    .r_dy = 0xff,
+    .l_dx = 0xff,
+    .l_dy = 0xff,
+    .button_map_1 = 0xff,
+    .button_map_2 = 0xff};
+
 void poll_controller_status(uint8_t num)
 {
     // write low to tell the adapter to send data
@@ -28,13 +36,20 @@ uint8_t compare_buffs()
 
     Serial.print("\tREC: ");
     char print_buf[6];
+    uint8_t *update_buf = (uint8_t *)&cntrl;
     for (uint8_t i = 0; i < 6; i++)
     {
+        update_buf[i] = buf_1[i];
         sprintf(print_buf, "0x%02x ", buf_1[i]);
         Serial.print(print_buf);
     }
     Serial.println();
     return 1;
+}
+
+controller *get_controller()
+{
+    return &cntrl;
 }
 
 void init_i2c(void)

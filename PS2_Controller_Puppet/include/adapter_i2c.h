@@ -10,12 +10,12 @@
 #define I2C_IRQ_PIN 8
 
 typedef struct controller {
-    uint8_t button_map_1;
-    uint8_t button_map_2;
     uint8_t r_dx;
     uint8_t r_dy;
     uint8_t l_dx;
     uint8_t l_dy;
+    uint8_t button_map_1;
+    uint8_t button_map_2;
 } controller;
 
 /**
@@ -27,6 +27,12 @@ void poll_controller_status(uint8_t num);
  * @brief initializes I2C and necessary events/outputs
  */
 void init_i2c(void);
+
+/**
+ * @brief retreive reference to the controller status
+ * @returns pointer to the controller
+ */
+controller *get_controller();
 
 uint8_t compare_buffs();
 
