@@ -1,14 +1,15 @@
 #include "wiimote_handle.h"
+#include "wiiuse_src/wiiuse.h"
 #include "ble_handler.h"
 
 // the wiimote state written as a PS2 controller
 controller cntrl = {
-    .l_dx = 0x44,
-    .l_dy = 0x11,
-    .r_dx = 0x00,
-    .r_dy = 0x74,
-    .button_map_1 = 0x41,
-    .button_map_2 = 0x14};
+    .l_dx = 0xff,
+    .l_dy = 0xff,
+    .r_dx = 0xff,
+    .r_dy = 0xff,
+    .button_map_1 = 0xff,
+    .button_map_2 = 0xff};
 // pointer to wiimote connected to
 wiimote *remote;
 
@@ -28,31 +29,41 @@ void handle_input(wiimote *remote)
     else
         cntrl.button_map_2 |= BM2_O_MASK;
 
-    if (IS_JUST_PRESSED(remote, WIIMOTE_BUTTON_HOME))
-        cntrl.button_map_2 &= ~BM1_START_MASK;
+    if (IS_JUST_PRESSED(remote, WIIMOTE_BUTTON_ONE))
+        cntrl.button_map_2 &= ~BM2_SQUARE_MASK;
     else
-        cntrl.button_map_2 |= BM1_START_MASK;
+        cntrl.button_map_2 |= BM2_SQUARE_MASK;
+
+    if (IS_JUST_PRESSED(remote, WIIMOTE_BUTTON_TWO))
+        cntrl.button_map_2 &= ~BM2_TRIANGLE_MASK;
+    else
+        cntrl.button_map_2 |= BM2_TRIANGLE_MASK;
+
+    if (IS_JUST_PRESSED(remote, WIIMOTE_BUTTON_HOME))
+        cntrl.button_map_1 &= ~BM1_START_MASK;
+    else
+        cntrl.button_map_1 |= BM1_START_MASK;
 
     // D PAD
     if (IS_JUST_PRESSED(remote, WIIMOTE_BUTTON_UP))
-        cntrl.button_map_2 &= ~BM1_UP_MASK;
+        cntrl.button_map_1 &= ~BM1_UP_MASK;
     else
-        cntrl.button_map_2 |= BM1_UP_MASK;
+        cntrl.button_map_1 |= BM1_UP_MASK;
 
     if (IS_JUST_PRESSED(remote, WIIMOTE_BUTTON_RIGHT))
-        cntrl.button_map_2 &= ~BM1_RIGHT_MASK;
+        cntrl.button_map_1 &= ~BM1_RIGHT_MASK;
     else
-        cntrl.button_map_2 |= BM1_RIGHT_MASK;
+        cntrl.button_map_1 |= BM1_RIGHT_MASK;
 
     if (IS_JUST_PRESSED(remote, WIIMOTE_BUTTON_DOWN))
-        cntrl.button_map_2 &= ~BM1_DOWN_MASK;
+        cntrl.button_map_1 &= ~BM1_DOWN_MASK;
     else
-        cntrl.button_map_2 |= BM1_DOWN_MASK;
+        cntrl.button_map_1 |= BM1_DOWN_MASK;
 
     if (IS_JUST_PRESSED(remote, WIIMOTE_BUTTON_LEFT))
-        cntrl.button_map_2 &= ~BM1_LEFT_MASK;
+        cntrl.button_map_1 &= ~BM1_LEFT_MASK;
     else
-        cntrl.button_map_2 |= BM1_LEFT_MASK;
+        cntrl.button_map_1 |= BM1_LEFT_MASK;
 }
 
 uint8_t init_wiimote_handler()
@@ -100,7 +111,7 @@ void begin_polling()
 {
     while (any_wiimote_connected(&remote, 1))
     {
-        if (wiiuse_poll(remote, 1))
+        if (wiiuse_poll(&remote, 1))
         {
             /*
              *  This happens if something happened on any wiimote.

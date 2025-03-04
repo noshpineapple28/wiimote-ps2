@@ -2,7 +2,6 @@
 #define __WIIMOTE_HANDLE_H_
 
 #include "main.h"
-#include "wiiuse.h"
 
 
 /********************** 1 MEANS RELEASED/0 MEANS PRESSED **********************/
