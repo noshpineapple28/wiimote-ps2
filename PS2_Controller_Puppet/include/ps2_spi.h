@@ -4,7 +4,7 @@
 #include <SPI.h>
 #include "main.h"
 
-#define MAX_COMMAND 6
+#define MAX_COMMAND 32
 #define ACK_PIN 9
 
 // posible commands

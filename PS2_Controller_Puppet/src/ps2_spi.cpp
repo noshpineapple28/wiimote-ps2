@@ -10,7 +10,7 @@ volatile uint8_t process_it = 0;
 static controller *cntrl;
 
 // buffers
-char buf[MAX_COMMAND * 6];
+char buf[4];
 volatile uint8_t rx[MAX_COMMAND];
 volatile uint8_t *tx = (uint8_t *)cntrl;
 volatile uint8_t header[3] = {0xff, 0x41, 0x5a};
@@ -66,7 +66,7 @@ void handle_spi(void)
 
     for (int i = 0; i < rx_pos; i++)
     {
-        sprintf(buf, "%02x/%02x ", rx[i], i < 3 ? header[i] : tx[i - 3]);
+        sprintf(buf, "%02x/%02x ", rx[i], i < 3 ? header[i] : (i < 9) ? tx[i - 3] : 0xff);
         Serial.print(buf);
         rx[i] = 0;
     }
@@ -206,9 +206,9 @@ ISR(SPI_STC_vect)
     {
         SPDR = header[header_pos++];
     }
-    else if (tx_pos >= MAX_COMMAND)
+    else if (tx_pos >= 6)
     {
-        SPDR = 0x00;
+        SPDR = 0xFF;
     }
     else
     {
