@@ -150,7 +150,7 @@ uint8_t initialize_ble()
 void write_to_ps2(controller *cntrl)
 {
     static uint32_t count = 0;
-    simpleble_err_t err = simpleble_peripheral_write_request(
+    simpleble_err_t err = simpleble_peripheral_write_command(
         ps2_peripheral,
         characteristic.service,
         characteristic.characteristic,

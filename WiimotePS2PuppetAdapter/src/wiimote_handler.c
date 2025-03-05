@@ -126,7 +126,6 @@ void begin_polling()
             case WIIUSE_EVENT:
                 /* a generic event occurred */
                 handle_input(remote);
-                write_to_ps2(&cntrl);
                 break;
 
             default:
@@ -137,7 +136,7 @@ void begin_polling()
             // handle_joystick(remote[0]->exp.nunchuk.js.x, remote[0]->exp.nunchuk.js.y);
             cntrl.r_dx = ((remote->exp.nunchuk.js.x + 1) / 2) * 0xff;
             cntrl.r_dy = ((remote->exp.nunchuk.js.y + 1) / 2) * 0xff;
-            Sleep(50);
+            write_to_ps2(&cntrl);
         }
     }
     wiiuse_cleanup(&remote, 1);
