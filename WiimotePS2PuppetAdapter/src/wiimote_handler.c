@@ -6,8 +6,8 @@
 controller cntrl = {
     .button_map_1 = 0xff,
     .button_map_2 = 0xff,
-    .r_dx = 0x74,
-    .r_dy = 0x74,
+    .r_dx = 0x7f,
+    .r_dy = 0x7f,
     .l_dx = 0x7f,
     .l_dy = 0x7f};
 // pointer to wiimote connected to
@@ -21,48 +21,48 @@ void handle_input(wiimote *remote)
 {
     if (IS_JUST_PRESSED(remote, WIIMOTE_BUTTON_A))
         cntrl.button_map_2 &= ~BM2_X_MASK;
-    else
+    else if (IS_RELEASED(remote, WIIMOTE_BUTTON_A))
         cntrl.button_map_2 |= BM2_X_MASK;
 
     if (IS_JUST_PRESSED(remote, WIIMOTE_BUTTON_B))
         cntrl.button_map_2 &= ~BM2_O_MASK;
-    else
+    else if (IS_RELEASED(remote, WIIMOTE_BUTTON_B))
         cntrl.button_map_2 |= BM2_O_MASK;
 
     if (IS_JUST_PRESSED(remote, WIIMOTE_BUTTON_ONE))
         cntrl.button_map_2 &= ~BM2_SQUARE_MASK;
-    else
+    else if (IS_RELEASED(remote, WIIMOTE_BUTTON_ONE))
         cntrl.button_map_2 |= BM2_SQUARE_MASK;
 
     if (IS_JUST_PRESSED(remote, WIIMOTE_BUTTON_TWO))
         cntrl.button_map_2 &= ~BM2_TRIANGLE_MASK;
-    else
+    else if (IS_RELEASED(remote, WIIMOTE_BUTTON_TWO))
         cntrl.button_map_2 |= BM2_TRIANGLE_MASK;
 
     if (IS_JUST_PRESSED(remote, WIIMOTE_BUTTON_HOME))
         cntrl.button_map_1 &= ~BM1_START_MASK;
-    else
+    else if (IS_RELEASED(remote, WIIMOTE_BUTTON_HOME))
         cntrl.button_map_1 |= BM1_START_MASK;
 
     // D PAD
     if (IS_JUST_PRESSED(remote, WIIMOTE_BUTTON_UP))
         cntrl.button_map_1 &= ~BM1_UP_MASK;
-    else
+    else if (IS_RELEASED(remote, WIIMOTE_BUTTON_UP))
         cntrl.button_map_1 |= BM1_UP_MASK;
 
     if (IS_JUST_PRESSED(remote, WIIMOTE_BUTTON_RIGHT))
         cntrl.button_map_1 &= ~BM1_RIGHT_MASK;
-    else
+    else if (IS_RELEASED(remote, WIIMOTE_BUTTON_RIGHT))
         cntrl.button_map_1 |= BM1_RIGHT_MASK;
 
     if (IS_JUST_PRESSED(remote, WIIMOTE_BUTTON_DOWN))
         cntrl.button_map_1 &= ~BM1_DOWN_MASK;
-    else
+    else if (IS_RELEASED(remote, WIIMOTE_BUTTON_DOWN))
         cntrl.button_map_1 |= BM1_DOWN_MASK;
 
     if (IS_JUST_PRESSED(remote, WIIMOTE_BUTTON_LEFT))
         cntrl.button_map_1 &= ~BM1_LEFT_MASK;
-    else
+    else if (IS_RELEASED(remote, WIIMOTE_BUTTON_LEFT))
         cntrl.button_map_1 |= BM1_LEFT_MASK;
 }
 
@@ -135,6 +135,9 @@ void begin_polling()
 
             // joystick inputs
             // handle_joystick(remote[0]->exp.nunchuk.js.x, remote[0]->exp.nunchuk.js.y);
+            cntrl.r_dx = ((remote->exp.nunchuk.js.x + 1) / 2) * 0xff;
+            cntrl.r_dy = ((remote->exp.nunchuk.js.y + 1) / 2) * 0xff;
+            Sleep(50);
         }
     }
     wiiuse_cleanup(&remote, 1);
