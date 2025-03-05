@@ -6,8 +6,8 @@
 controller cntrl = {
     .button_map_1 = 0xff,
     .button_map_2 = 0xff,
-    .r_dx = 0x00,
-    .r_dy = 0x00,
+    .r_dx = 0x74,
+    .r_dy = 0x74,
     .l_dx = 0x7f,
     .l_dy = 0x7f};
 // pointer to wiimote connected to
