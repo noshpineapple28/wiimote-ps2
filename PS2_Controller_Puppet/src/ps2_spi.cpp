@@ -2,13 +2,18 @@
 #include "adapter_i2c.h"
 
 volatile uint8_t digital_mode = 1;
+// this will hold the bits related to the custom map!
+volatile uint32_t custom_map_set = 0;
 volatile uint8_t process_it = 0;
 
+// controller state
+static controller *cntrl;
+
 // buffers
+char buf[MAX_COMMAND * 6];
 volatile uint8_t rx[MAX_COMMAND];
-volatile uint8_t *tx = config42;
-char buf[MAX_COMMAND * 3];
-volatile uint8_t header[5] = {0xff, 0x41, 0x5a, 0xff, 0xff};
+volatile uint8_t *tx = (uint8_t *)cntrl;
+volatile uint8_t header[3] = {0xff, 0x41, 0x5a};
 // positions
 volatile uint8_t rx_pos = 0;
 volatile uint8_t tx_pos = 0;
@@ -16,9 +21,6 @@ volatile uint8_t header_pos = 0;
 
 // size of the transfer to be done
 volatile uint8_t max_transfer_size = 0;
-
-// controller state
-static controller *cntrl;
 
 void init_ps2_spi()
 {
@@ -78,6 +80,25 @@ void handle_spi(void)
     process_it = 0;
 }
 
+void set_header_dependent_on_analog_mode()
+{
+    if (digital_mode)
+    {
+        header[1] = 0x41;
+    }
+    else
+    {
+        if (custom_map_set)
+        {
+            header[1] = 0x79;
+        }
+        else
+        {
+            header[1] = 0x73;
+        }
+    }
+}
+
 /**
  * @brief changes the data being sent based on the received headers
  */
@@ -90,36 +111,42 @@ void set_next_command()
     {
     case 0x41:
         tx = config41;
-        max_transfer_size = max_digital41;
+        header[1] = 0xf3;
         break;
     case 0x42:
-        // tx = config42;
-        tx = (uint8_t *) cntrl + 4;
-        max_transfer_size = max_digital42;
+        set_header_dependent_on_analog_mode();
+        tx = (uint8_t *)cntrl;
         break;
     case 0x43:
+        // enter escape mode
         if (header[1] == 0x41)
         {
-            tx = config431;
+            tx = (uint8_t *)cntrl;
             header[1] = 0xf3;
         }
+        // exit escape mode
         else
         {
-            header[1] = 0x41;
-            tx = config430;
+            set_header_dependent_on_analog_mode();
+            tx = (uint8_t *)cntrl;
         }
-        max_transfer_size = max_digital43;
         break;
     case 0x44:
+        header[1] = 0xf3;
+        digital_mode = 0;
         tx = config44;
-        header[1] = 0x71;
-        max_transfer_size = max_digital44;
         break;
     case 0x45:
+        header[1] = 0xf3;
         tx = config45;
-        max_transfer_size = max_digital45;
+        // this bit represent whether the analog LED is on
+        if (digital_mode)
+            tx[2] = 0x00;
+        else
+            tx[2] = 0x01;
         break;
     case 0x46:
+        header[1] = 0xf3;
         if (!been_here_46)
         {
             tx = config460;
@@ -130,13 +157,13 @@ void set_next_command()
             been_here_46 = 0;
             tx = config461;
         }
-        max_transfer_size = max_digital46;
         break;
     case 0x47:
+        header[1] = 0xf3;
         tx = config47;
-        max_transfer_size = max_digital47;
         break;
     case 0x4C:
+        header[1] = 0xf3;
         if (!been_here_4c)
         {
             tx = config4c0;
@@ -147,15 +174,15 @@ void set_next_command()
             tx = config4c1;
             been_here_4c = 0;
         }
-        max_transfer_size = max_digital4c;
         break;
     case 0x4d:
+        header[1] = 0xf3;
+        // TODO: thos response should follow the data sent
         tx = config4d;
-        max_transfer_size = max_digital4d;
         break;
     default:
-        tx = config42;
-        max_transfer_size = max_digital42;
+        set_header_dependent_on_analog_mode();
+        tx = (uint8_t *)cntrl;
         break;
     }
 }
@@ -178,6 +205,10 @@ ISR(SPI_STC_vect)
     if (header_pos < 3)
     {
         SPDR = header[header_pos++];
+    }
+    else if (tx_pos >= MAX_COMMAND)
+    {
+        SPDR = 0x00;
     }
     else
     {
