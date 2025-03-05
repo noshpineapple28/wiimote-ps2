@@ -9,10 +9,10 @@ BLEDoubleCharacteristic controller_state(
 static controller cntrl = {
     .button_map_1 = 0xff,
     .button_map_2 = 0xff,
-    .r_dx = 0xff,
-    .r_dy = 0xff,
-    .l_dx = 0xff,
-    .l_dy = 0xff
+    .r_dx = 0x7f,
+    .r_dy = 0x7f,
+    .l_dx = 0x7f,
+    .l_dy = 0x7f
 };
 
 controller *get_controller(void)

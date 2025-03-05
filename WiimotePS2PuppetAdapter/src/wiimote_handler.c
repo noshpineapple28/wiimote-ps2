@@ -4,12 +4,12 @@
 
 // the wiimote state written as a PS2 controller
 controller cntrl = {
-    .l_dx = 0xff,
-    .l_dy = 0xff,
-    .r_dx = 0xff,
-    .r_dy = 0xff,
     .button_map_1 = 0xff,
-    .button_map_2 = 0xff};
+    .button_map_2 = 0xff,
+    .r_dx = 0x00,
+    .r_dy = 0x00,
+    .l_dx = 0x7f,
+    .l_dy = 0x7f};
 // pointer to wiimote connected to
 wiimote *remote;
 
@@ -92,19 +92,23 @@ uint8_t init_wiimote_handler()
     return 0;
 }
 
-short any_wiimote_connected(wiimote** wm, int wiimotes) {
-	int i;
-	if (!wm) {
-		return 0;
-	}
+short any_wiimote_connected(wiimote **wm, int wiimotes)
+{
+    int i;
+    if (!wm)
+    {
+        return 0;
+    }
 
-	for (i = 0; i < wiimotes; i++) {
-		if (wm[i] && WIIMOTE_IS_CONNECTED(wm[i])) {
-			return 1;
-		}
-	}
+    for (i = 0; i < wiimotes; i++)
+    {
+        if (wm[i] && WIIMOTE_IS_CONNECTED(wm[i]))
+        {
+            return 1;
+        }
+    }
 
-	return 0;
+    return 0;
 }
 
 void begin_polling()

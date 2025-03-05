@@ -5,12 +5,12 @@ uint8_t buf_1[6];
 uint8_t buf_2[6];
 
 static controller cntrl = {
-    .r_dx = 0xff,
-    .r_dy = 0xff,
-    .l_dx = 0xff,
-    .l_dy = 0xff,
     .button_map_1 = 0xff,
-    .button_map_2 = 0xff};
+    .button_map_2 = 0xff,
+    .r_dx = 0x7f,
+    .r_dy = 0x7f,
+    .l_dx = 0x7f,
+    .l_dy = 0x7f};
 
 void poll_controller_status(uint8_t num)
 {
