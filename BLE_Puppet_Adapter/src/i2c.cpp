@@ -1,8 +1,6 @@
 #include "i2c.h"
 #include "bluetooth_adapter.h"
 
-uint8_t interrupt_occurred = 0;
-
 /**
  * @brief initiated by the Puppet itself, sends data to it
  */
@@ -14,7 +12,6 @@ void send_controller_state()
     Wire.write(arr[i++]);
     if (i >= 6)
         i = 0;
-    interrupt_occurred = 1;
 }
 
 void init_i2c()
@@ -25,13 +22,4 @@ void init_i2c()
 
     Wire.begin(0x07);
     Serial.print("I2C Initialized\r\n");
-}
-
-void i2c_loop()
-{
-    if (interrupt_occurred)
-    {
-        Serial.print("I2C Transmission ocurred\r\n");
-        interrupt_occurred = 0;
-    }
 }
