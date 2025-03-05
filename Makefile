@@ -4,7 +4,7 @@
 
 # build the cmake project
 # DEFAULT CMD
-MODE=Debug
+MODE=Release
 
 cmake:
 	mkdir build || \
