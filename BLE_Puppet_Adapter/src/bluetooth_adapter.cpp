@@ -38,9 +38,11 @@ void initialize_adapter()
     // begin initialization
     if (!BLE.begin())
     {
-        Serial.println("starting Bluetooth® Low Energy module failed!");
-        while (1)
-            ;
+        Serial.println("Reseting...");
+        static const char RESET[] = "AT+RESET\n";
+        Serial2.write(RESET, sizeof(RESET) - 1);
+        delay(2000);
+        NVIC_SystemReset();
     }
 
     // setup
