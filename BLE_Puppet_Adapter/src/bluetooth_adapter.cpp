@@ -1,9 +1,9 @@
 #include "bluetooth_adapter.h"
 
 BLEService service(ADAPTER_SERVICE_UUID);
-BLEDoubleCharacteristic controller_state(
+BLEStringCharacteristic controller_state(
     ADAPTER_CHARACTERISTIC_UUID,
-    BLEWriteWithoutResponse);
+    BLEWriteWithoutResponse, 6);
 
 // status of the controller
 static controller cntrl = {
@@ -50,7 +50,6 @@ void initialize_adapter()
     BLE.setAdvertisedService(service);
     service.addCharacteristic(controller_state);
     BLE.addService(service);
-    controller_state.writeValue(0xffffffffffff);
 
     // begin
     BLE.advertise();
@@ -71,15 +70,14 @@ void update_state()
         {
             if (controller_state.written())
             {
-                double val = controller_state.value();
-                uint8_t *arr = (uint8_t *)&val;
+                String arr = controller_state.value();
                 // assigns controller state values BUT ALSO it prints it :D
-                cntrl.l_dx = arr[0];
-                cntrl.l_dy = arr[1];
-                cntrl.r_dx = arr[2];
-                cntrl.r_dy = arr[3];
-                cntrl.button_map_1 = arr[4];
-                cntrl.button_map_2 = arr[5];
+                cntrl.l_dx = (uint8_t)arr[0];
+                cntrl.l_dy = (uint8_t)arr[1];
+                cntrl.r_dx = (uint8_t)arr[2];
+                cntrl.r_dy = (uint8_t)arr[3];
+                cntrl.button_map_1 = (uint8_t)arr[4];
+                cntrl.button_map_2 = (uint8_t)arr[5];
             }
         }
 
