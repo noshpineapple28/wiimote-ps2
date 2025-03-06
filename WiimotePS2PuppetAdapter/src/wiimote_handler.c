@@ -19,51 +19,150 @@ wiimote *remote;
  */
 void handle_input(wiimote *remote)
 {
-    if (IS_JUST_PRESSED(remote, WIIMOTE_BUTTON_A))
-        cntrl.button_map_2 &= ~BM2_X_MASK;
-    else if (IS_RELEASED(remote, WIIMOTE_BUTTON_A))
-        cntrl.button_map_2 |= BM2_X_MASK;
+    nunchuk_t *nun = &remote->exp.nunchuk;
+    if (IS_PRESSED(remote, WIIMOTE_BUTTON_B))
+    {
+        // L2
+        if (IS_PRESSED(nun, NUNCHUK_BUTTON_C))
+        {
+            cntrl.button_map_2 |= BM2_L1_MASK;
+            cntrl.button_map_2 &= ~BM2_L2_MASK;
+        }
+        else if (!IS_PRESSED(nun, NUNCHUK_BUTTON_C))
+        {
+            cntrl.button_map_2 |= BM2_L1_MASK;
+            cntrl.button_map_2 |= BM2_L2_MASK;
+        }
 
-    if (IS_JUST_PRESSED(remote, WIIMOTE_BUTTON_B))
-        cntrl.button_map_2 &= ~BM2_O_MASK;
-    else if (IS_RELEASED(remote, WIIMOTE_BUTTON_B))
-        cntrl.button_map_2 |= BM2_O_MASK;
+        // R2
+        if (IS_PRESSED(nun, NUNCHUK_BUTTON_Z))
+        {
+            cntrl.button_map_2 |= BM2_R1_MASK;
+            cntrl.button_map_2 &= ~BM2_R2_MASK;
+        }
+        else if (!IS_PRESSED(nun, NUNCHUK_BUTTON_Z))
+        {
+            cntrl.button_map_2 |= BM2_R1_MASK;
+            cntrl.button_map_2 |= BM2_R2_MASK;
+        }
 
-    if (IS_JUST_PRESSED(remote, WIIMOTE_BUTTON_ONE))
-        cntrl.button_map_2 &= ~BM2_SQUARE_MASK;
-    else if (IS_RELEASED(remote, WIIMOTE_BUTTON_ONE))
-        cntrl.button_map_2 |= BM2_SQUARE_MASK;
+        // x
+        if (IS_PRESSED(remote, WIIMOTE_BUTTON_A))
+        {
+            cntrl.button_map_2 |= BM2_SQUARE_MASK;
+            cntrl.button_map_2 &= ~BM2_X_MASK;
+        }
+        else if (!IS_PRESSED(remote, WIIMOTE_BUTTON_A))
+        {
+            cntrl.button_map_2 |= BM2_SQUARE_MASK;
+            cntrl.button_map_2 |= BM2_X_MASK;
+        }
+    }
+    else if (!IS_PRESSED(remote, WIIMOTE_BUTTON_B))
+    {
+        // L1
+        if (IS_PRESSED(nun, NUNCHUK_BUTTON_C))
+        {
+            cntrl.button_map_2 |= BM2_L2_MASK;
+            cntrl.button_map_2 &= ~BM2_L1_MASK;
+        }
+        else if (!IS_PRESSED(nun, NUNCHUK_BUTTON_C))
+        {
+            cntrl.button_map_2 |= BM2_L2_MASK;
+            cntrl.button_map_2 |= BM2_L1_MASK;
+        }
 
-    if (IS_JUST_PRESSED(remote, WIIMOTE_BUTTON_TWO))
+        // R1
+        if (IS_PRESSED(nun, NUNCHUK_BUTTON_Z))
+        {
+            cntrl.button_map_2 |= BM2_R2_MASK;
+            cntrl.button_map_2 &= ~BM2_R1_MASK;
+        }
+        else if (!IS_PRESSED(nun, NUNCHUK_BUTTON_Z))
+        {
+            cntrl.button_map_2 |= BM2_R2_MASK;
+            cntrl.button_map_2 |= BM2_R1_MASK;
+        }
+
+        // square
+        if (IS_PRESSED(remote, WIIMOTE_BUTTON_A))
+        {
+            cntrl.button_map_2 |= BM2_X_MASK;
+            cntrl.button_map_2 &= ~BM2_SQUARE_MASK;
+        }
+        else if (!IS_PRESSED(remote, WIIMOTE_BUTTON_A))
+        {
+            cntrl.button_map_2 |= BM2_X_MASK;
+            cntrl.button_map_2 |= BM2_SQUARE_MASK;
+        }
+    }
+
+    if (IS_PRESSED(remote, WIIMOTE_BUTTON_MINUS))
         cntrl.button_map_2 &= ~BM2_TRIANGLE_MASK;
-    else if (IS_RELEASED(remote, WIIMOTE_BUTTON_TWO))
+    else if (!IS_PRESSED(remote, WIIMOTE_BUTTON_MINUS))
         cntrl.button_map_2 |= BM2_TRIANGLE_MASK;
 
-    if (IS_JUST_PRESSED(remote, WIIMOTE_BUTTON_HOME))
+    if (IS_PRESSED(remote, WIIMOTE_BUTTON_MINUS))
+        cntrl.button_map_2 &= ~BM2_O_MASK;
+    else if (!IS_PRESSED(remote, WIIMOTE_BUTTON_MINUS))
+        cntrl.button_map_2 |= BM2_O_MASK;
+
+    if (IS_PRESSED(remote, WIIMOTE_BUTTON_HOME))
         cntrl.button_map_1 &= ~BM1_START_MASK;
-    else if (IS_RELEASED(remote, WIIMOTE_BUTTON_HOME))
+    else if (!IS_PRESSED(remote, WIIMOTE_BUTTON_HOME))
         cntrl.button_map_1 |= BM1_START_MASK;
 
     // D PAD
-    if (IS_JUST_PRESSED(remote, WIIMOTE_BUTTON_UP))
+    float x_pos = ((remote->exp.nunchuk.js.x + 1) / 2);
+    float y_pos = ((remote->exp.nunchuk.js.y + 1) / 2);
+    float threshhold = .25;
+    // nunchuk
+    // if (y_pos > 1 - threshhold)
+    //     cntrl.button_map_1 &= ~BM1_UP_MASK;
+    // else if (y_pos <= 1 - threshhold)
+    //     cntrl.button_map_1 |= BM1_UP_MASK;
+
+    // if (x_pos > 1 - threshhold)
+    //     cntrl.button_map_1 &= ~BM1_RIGHT_MASK;
+    // else if (x_pos <= 1 - threshhold)
+    //     cntrl.button_map_1 |= BM1_RIGHT_MASK;
+
+    // if (y_pos < threshhold)
+    //     cntrl.button_map_1 &= ~BM1_DOWN_MASK;
+    // else if (y_pos >= threshhold)
+    //     cntrl.button_map_1 |= BM1_DOWN_MASK;
+
+    // if (x_pos < threshhold)
+    //     cntrl.button_map_1 &= ~BM1_LEFT_MASK;
+    // else if (x_pos >= threshhold)
+    //     cntrl.button_map_1 |= BM1_LEFT_MASK;
+
+    // dpad
+    if (IS_PRESSED(remote, WIIMOTE_BUTTON_UP))
         cntrl.button_map_1 &= ~BM1_UP_MASK;
-    else if (IS_RELEASED(remote, WIIMOTE_BUTTON_UP))
+    else if (!IS_PRESSED(remote, WIIMOTE_BUTTON_UP))
         cntrl.button_map_1 |= BM1_UP_MASK;
 
-    if (IS_JUST_PRESSED(remote, WIIMOTE_BUTTON_RIGHT))
+    if (IS_PRESSED(remote, WIIMOTE_BUTTON_RIGHT))
         cntrl.button_map_1 &= ~BM1_RIGHT_MASK;
-    else if (IS_RELEASED(remote, WIIMOTE_BUTTON_RIGHT))
+    else if (!IS_PRESSED(remote, WIIMOTE_BUTTON_RIGHT))
         cntrl.button_map_1 |= BM1_RIGHT_MASK;
 
-    if (IS_JUST_PRESSED(remote, WIIMOTE_BUTTON_DOWN))
+    if (IS_PRESSED(remote, WIIMOTE_BUTTON_DOWN))
         cntrl.button_map_1 &= ~BM1_DOWN_MASK;
-    else if (IS_RELEASED(remote, WIIMOTE_BUTTON_DOWN))
+    else if (!IS_PRESSED(remote, WIIMOTE_BUTTON_DOWN))
         cntrl.button_map_1 |= BM1_DOWN_MASK;
 
-    if (IS_JUST_PRESSED(remote, WIIMOTE_BUTTON_LEFT))
+    if (IS_PRESSED(remote, WIIMOTE_BUTTON_LEFT))
         cntrl.button_map_1 &= ~BM1_LEFT_MASK;
-    else if (IS_RELEASED(remote, WIIMOTE_BUTTON_LEFT))
+    else if (!IS_PRESSED(remote, WIIMOTE_BUTTON_LEFT))
         cntrl.button_map_1 |= BM1_LEFT_MASK;
+
+        // select button
+    if (IS_PRESSED(remote, WIIMOTE_BUTTON_ONE))
+        cntrl.button_map_1 &= ~BM1_SELECT_MASK;
+    else if (!IS_PRESSED(remote, WIIMOTE_BUTTON_ONE))
+        cntrl.button_map_1 |= BM1_SELECT_MASK;
 }
 
 uint8_t init_wiimote_handler()
@@ -134,8 +233,8 @@ void begin_polling()
 
             // joystick inputs
             // handle_joystick(remote[0]->exp.nunchuk.js.x, remote[0]->exp.nunchuk.js.y);
-            cntrl.r_dx = ((remote->exp.nunchuk.js.x + 1) / 2) * 0xff;
-            cntrl.r_dy = ((remote->exp.nunchuk.js.y + 1) / 2) * 0xff;
+            cntrl.l_dx = (((remote->exp.nunchuk.js.x + 1) / 2) * 0xff);
+            cntrl.l_dy = 0xFF - (((remote->exp.nunchuk.js.y + 1) / 2) * 0xff);
             write_to_ps2(&cntrl);
         }
     }
