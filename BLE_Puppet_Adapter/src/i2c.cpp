@@ -17,7 +17,6 @@ void send_controller_state()
 void init_i2c()
 {
     Serial.print("Initializing I2C\r\n");
-    pinMode(I2C_IRQ_PIN, INPUT);
     Wire.onRequest(send_controller_state);
 
     Wire.begin(0x07);

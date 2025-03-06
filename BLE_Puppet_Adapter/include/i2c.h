@@ -4,7 +4,6 @@
 #include <Wire.h>
 #include "main.h"
 
-#define I2C_IRQ_PIN D3
 #define I2C_SDA_PIN WIRE_SDA_PIN
 #define I2C_SCL_PIN WIRE_SCL_PIN
 
