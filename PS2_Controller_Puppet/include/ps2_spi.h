@@ -5,7 +5,7 @@
 #include "main.h"
 
 #define MAX_COMMAND 32
-#define ACK_PIN 9
+#define ACK_PIN 8
 
 // posible commands
 // pressure sensor

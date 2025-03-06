@@ -7,7 +7,6 @@
 
 #define I2C_SDA_PIN PIN_WIRE_SDA
 #define I2C_SCL_PIN PIN_WIRE_SCL
-#define I2C_IRQ_PIN 8
 
 typedef struct controller {
     uint8_t button_map_1;
